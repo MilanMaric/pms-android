@@ -17,7 +17,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -29,15 +28,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+
+import cz.msebera.android.httpclient.auth.AuthScope;
+import cz.msebera.android.httpclient.auth.UsernamePasswordCredentials;
+import cz.msebera.android.httpclient.client.CredentialsProvider;
+import cz.msebera.android.httpclient.client.HttpClient;
+import cz.msebera.android.httpclient.client.methods.HttpGet;
+import cz.msebera.android.httpclient.impl.client.BasicCredentialsProvider;
+import cz.msebera.android.httpclient.impl.client.BasicResponseHandler;
+import cz.msebera.android.httpclient.impl.client.CloseableHttpClient;
+import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
+import cz.msebera.android.httpclient.impl.client.HttpClients;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -294,7 +298,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        public static final String PISIO_ETFBL_API_ROOT = "http://pisio.etfbl.net/~milanm/public/index.php/pms_l/api/v1/";
+        public static final String PISIO_ETFBL_API_ROOT = "http://pisio.etfbl.net/~milanm/pms_l/public/index.php/api/v1/";
         private final String mEmail;
         private final String mPassword;
 
@@ -305,29 +309,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            String urlString = PISIO_ETFBL_API_ROOT + "projects/";
+            String urlString = PISIO_ETFBL_API_ROOT + "projects";
+            Log.e(TAG, urlString);
+            CredentialsProvider provider = new BasicCredentialsProvider();
+            UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(mEmail, mPassword);
+            provider.setCredentials(AuthScope.ANY, credentials);
+            HttpClient httpClient = HttpClientBuilder.create().setDefaultCredentialsProvider(provider).build();
+            HttpGet getMethod = new HttpGet(urlString);
+            BasicResponseHandler handlerHC4 = new BasicResponseHandler();
+            String response = "";
             try {
-                URL url = new URL(urlString);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                PrintWriter pw = new PrintWriter(connection.getOutputStream());
-                String userPassword = mEmail + ":" + mPassword;
-                String encoding = new String(Base64.encode(userPassword.getBytes(), Base64.DEFAULT));
-                URLConnection uc = url.openConnection();
-                uc.setRequestProperty("Authorization", "Basic " + encoding);
-                uc.connect();
-                pw.close();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String line = "";
-                while (line != null) {
-                    line = reader.readLine();
-                    Log.d(TAG, line);
-                }
-
+                response = httpClient.execute(getMethod, handlerHC4);
             } catch (IOException e) {
                 e.printStackTrace();
+                return false;
             }
-
-
+            Log.d(TAG, response);
             return true;
         }
 
