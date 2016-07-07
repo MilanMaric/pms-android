@@ -28,6 +28,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +43,7 @@ import cz.msebera.android.httpclient.client.HttpClient;
 import cz.msebera.android.httpclient.client.methods.HttpGet;
 import cz.msebera.android.httpclient.impl.client.BasicCredentialsProvider;
 import cz.msebera.android.httpclient.impl.client.BasicResponseHandler;
-import cz.msebera.android.httpclient.impl.client.CloseableHttpClient;
 import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
-import cz.msebera.android.httpclient.impl.client.HttpClients;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -320,7 +322,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             String response = "";
             try {
                 response = httpClient.execute(getMethod, handlerHC4);
+                JSONObject o = new JSONObject(response);
+                if (o.getBoolean("success")) {
+                    JSONArray array = o.getJSONArray("data");
+                    List<Project> list = ProjectDAO.getFromJSON(array);
+                }
             } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            } catch (JSONException e) {
                 e.printStackTrace();
                 return false;
             }
