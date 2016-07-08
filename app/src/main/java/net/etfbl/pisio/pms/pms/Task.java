@@ -1,5 +1,7 @@
 package net.etfbl.pisio.pms.pms;
 
+import java.util.List;
+
 /****************************************************************************
  * Copyright (c) 2016 Elektrotehnicki fakultet
  * Patre 5, Banja Luka
@@ -30,6 +32,15 @@ public class Task {
     private String ManHour;
     private String PercentageDone;
     private String Hours;
+    private List<Activity> activities;
+
+    public List<Activity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(List<Activity> activities) {
+        this.activities = activities;
+    }
 
     public Task(int id, String description, String start, String end, String deadline, String title, String manHour, String percentageDone, String hours) {
         Id = id;

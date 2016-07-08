@@ -37,8 +37,11 @@ public class ProjectDetailActivity extends AppCompatActivity {
         title.setText(project.getTitle());
         taskAdapter = new TaskAdapter(this);
         tasksListView = (ListView) findViewById(R.id.projectDetailTasksList);
+        tasksListView.setAdapter(taskAdapter);
         TextView description = (TextView) findViewById(R.id.projectDetailDescription);
         description.setText(project.getDescription());
+        TasksListAsyncTask asyncTask = new TasksListAsyncTask();
+        asyncTask.execute();
     }
 
     public class TasksListAsyncTask extends AsyncTask<Void, Void, List<Task>> {
@@ -73,7 +76,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<Task> tasks) {
-
+            taskAdapter.setList(tasks);
         }
     }
 }
