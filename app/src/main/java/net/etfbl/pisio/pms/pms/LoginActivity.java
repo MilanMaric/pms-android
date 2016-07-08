@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -51,17 +52,18 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
-
     public static final String TAG = "LoginActivity";
+    public static final String PROJECTS_EXTRA_TAG = "projects";
+    public static final String PISIO_ETFBL_API_ROOT = "http://pisio.etfbl.net/~milanm/pms_l/public/index.php/api/v1/";
     /**
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
+    public static UsernamePasswordCredentials credentials;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
-
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
@@ -298,9 +300,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserLoginTask extends AsyncTask<Void, Void, List<Project>> {
 
-        public static final String PISIO_ETFBL_API_ROOT = "http://pisio.etfbl.net/~milanm/pms_l/public/index.php/api/v1/";
         private final String mEmail;
         private final String mPassword;
 
@@ -310,41 +311,46 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected List<Project> doInBackground(Void... params) {
             String urlString = PISIO_ETFBL_API_ROOT + "projects";
             Log.e(TAG, urlString);
             CredentialsProvider provider = new BasicCredentialsProvider();
-            UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(mEmail, mPassword);
+
+            credentials = new UsernamePasswordCredentials(mEmail, mPassword);
             provider.setCredentials(AuthScope.ANY, credentials);
             HttpClient httpClient = HttpClientBuilder.create().setDefaultCredentialsProvider(provider).build();
             HttpGet getMethod = new HttpGet(urlString);
             BasicResponseHandler handlerHC4 = new BasicResponseHandler();
+            List<Project> list = new ArrayList<>();
             String response = "";
             try {
                 response = httpClient.execute(getMethod, handlerHC4);
                 JSONObject o = new JSONObject(response);
                 if (o.getBoolean("success")) {
                     JSONArray array = o.getJSONArray("data");
-                    List<Project> list = ProjectDAO.getFromJSON(array);
+                    list = ProjectDAO.getFromJSON(array);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                return false;
+                return null;
             } catch (JSONException e) {
                 e.printStackTrace();
-                return false;
+                return null;
             }
             Log.d(TAG, response);
-            return true;
+            return list;
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        protected void onPostExecute(final List<Project> list) {
             mAuthTask = null;
             showProgress(false);
+            if (list != null) {
 
-            if (success) {
-                finish();
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra(PROJECTS_EXTRA_TAG, (ArrayList) list);
+                startActivity(intent);
+
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

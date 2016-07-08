@@ -1,5 +1,7 @@
 package net.etfbl.pisio.pms.pms;
 
+import java.io.Serializable;
+
 /****************************************************************************
  * Copyright (c) 2016 Elektrotehnicki fakultet
  * Patre 5, Banja Luka
@@ -20,7 +22,7 @@ package net.etfbl.pisio.pms.pms;
  * \history
  * <p/>
  **********************************************************************/
-public class Project {
+public class Project implements Serializable{
 
     private int Id;
     private String Title;
