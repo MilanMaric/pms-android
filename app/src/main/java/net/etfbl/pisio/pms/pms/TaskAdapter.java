@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -77,16 +78,24 @@ public class TaskAdapter extends BaseAdapter {
             holder.mManHour = (TextView) view.findViewById(R.id.taskListManHour);
             holder.mPercentageDone = (TextView) view.findViewById(R.id.taskListPercentageDone);
             holder.mHours = (TextView) view.findViewById(R.id.taskListHours);
+            holder.mListView = (LinearLayout) view.findViewById(R.id.taskListActivityListView);
             view.setTag(holder);
         }
         Task task = (Task) getItem(position);
         ViewHolder holder = (ViewHolder) view.getTag();
+        holder.mTitle.setText(task.getTitle());
         holder.mDescription.setText(task.getDescription());
         holder.mStart.setText(task.getStart());
         holder.mEnd.setText(task.getEnd());
         holder.mDeadline.setText(task.getDeadline());
         holder.mPercentageDone.setText(task.getPercentageDone());
         holder.mHours.setText(task.getHours());
+        for (int i = 0; i < task.getActivities().size(); i++) {
+            TextView textView = new TextView(mContext);
+            textView.setText(task.getActivities().get(i).toString());
+            holder.mListView.addView(textView);
+        }
+//        arrayAdapter.notifyDataSetChanged();
         return view;
     }
 
@@ -99,5 +108,6 @@ public class TaskAdapter extends BaseAdapter {
         public TextView mManHour = null;
         public TextView mPercentageDone = null;
         public TextView mHours = null;
+        public LinearLayout mListView = null;
     }
 }

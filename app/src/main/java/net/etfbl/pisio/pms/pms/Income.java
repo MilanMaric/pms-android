@@ -6,7 +6,7 @@ package net.etfbl.pisio.pms.pms;
  * <p/>
  * All Rights Reserved
  * <p/>
- * \file net.etfbl.pisio.pms.pms Activity
+ * \file net.etfbl.pisio.pms.pms Income
  * \brief
  * This file contains a source code for class TaskAdapter
  * <p/>
@@ -20,27 +20,11 @@ package net.etfbl.pisio.pms.pms;
  * \history
  * <p/>
  **********************************************************************/
-public class Activity {
+public class Income {
     private int Id;
-    private String Description;
-    private String Date;
-    private String hours;
-
-    public Activity(int id, String description, String date, String hours) {
-        Id = id;
-        Description = description;
-        Date = date;
-        this.hours = hours;
-    }
-
-    public Activity() {
-
-    }
-
-    @Override
-    public String toString() {
-        return "Description: " + Description + "\nDate: " + Date + "\nhours: " + hours + "\n";
-    }
+    private String description;
+    private String Amount;
+    private String date;
 
     public int getId() {
         return Id;
@@ -51,26 +35,37 @@ public class Activity {
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
+    }
+
+    public String getAmount() {
+        return Amount;
+    }
+
+    public void setAmount(String amount) {
+        Amount = amount;
     }
 
     public String getDate() {
-        return Date;
+        return date;
     }
 
     public void setDate(String date) {
-        Date = date;
+        this.date = date;
     }
 
-    public String getHours() {
-        return hours;
+    public Income() {
+
     }
 
-    public void setHours(String hours) {
-        this.hours = hours;
+    public Income(int id, String description, String amount, String date) {
+        Id = id;
+        this.description = description;
+        Amount = amount;
+        this.date = date;
     }
 }

@@ -46,4 +46,14 @@ public class ProjectDAO {
         }
         return list;
     }
+
+    public static ProjectDetails getFromJSON(JSONObject object) {
+        ProjectDetails projectDetails;
+        Gson gson = new Gson();
+        Type type = new TypeToken<ProjectDetails>() {
+        }.getType();
+
+        return (ProjectDetails) gson.fromJson(object.toString(), type);
+
+    }
 }

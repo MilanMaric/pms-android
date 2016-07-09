@@ -4,15 +4,15 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.List;
 
 import cz.msebera.android.httpclient.auth.AuthScope;
 import cz.msebera.android.httpclient.client.CredentialsProvider;
@@ -26,6 +26,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
     private Project project;
     private ListView tasksListView;
     private TaskAdapter taskAdapter;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,36 +34,48 @@ public class ProjectDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_project_detail);
         Intent intent = getIntent();
         project = (Project) intent.getSerializableExtra(MainActivity.PROJECT_TAG);
-        TextView title = (TextView) findViewById(R.id.projectDetailTitle);
-        title.setText(project.getTitle());
+
         taskAdapter = new TaskAdapter(this);
         tasksListView = (ListView) findViewById(R.id.projectDetailTasksList);
         tasksListView.setAdapter(taskAdapter);
-        TextView description = (TextView) findViewById(R.id.projectDetailDescription);
-        description.setText(project.getDescription());
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
+        setFields();
         TasksListAsyncTask asyncTask = new TasksListAsyncTask();
         asyncTask.execute();
     }
 
-    public class TasksListAsyncTask extends AsyncTask<Void, Void, List<Task>> {
+    private void setFields() {
+        TextView title = (TextView) findViewById(R.id.projectDetailTitle);
+        title.setText(project.getTitle());
+        TextView description = (TextView) findViewById(R.id.projectDetailDescription);
+        description.setText(project.getDescription());
+        TextView start = (TextView) findViewById(R.id.projectDetailStartDate);
+        start.setText(project.getStartDate());
+        TextView end = (TextView) findViewById(R.id.projectDetailEndDate);
+        end.setText(project.getEndDate());
+        TextView budget = (TextView) findViewById(R.id.projectDetailBudget);
+        budget.setText(project.getBudget());
+    }
+
+    public class TasksListAsyncTask extends AsyncTask<Void, Void, ProjectDetails> {
 
         @Override
-        protected List<Task> doInBackground(Void... params) {
+        protected ProjectDetails doInBackground(Void... params) {
             String urlString = LoginActivity.PISIO_ETFBL_API_ROOT + "projects/" + project.getId();
             CredentialsProvider provider = new BasicCredentialsProvider();
             provider.setCredentials(AuthScope.ANY, LoginActivity.credentials);
             HttpClient httpClient = HttpClientBuilder.create().setDefaultCredentialsProvider(provider).build();
             HttpGet getMethod = new HttpGet(urlString);
             BasicResponseHandler handlerHC4 = new BasicResponseHandler();
-            List<Task> tasksList = null;
+            ProjectDetails projectDetails = null;
             String response = "";
             try {
                 response = httpClient.execute(getMethod, handlerHC4);
                 JSONObject o = new JSONObject(response);
                 if (o.getBoolean("success")) {
                     JSONObject data = o.getJSONObject("data");
-                    JSONArray tasksArray = data.getJSONArray("tasks");
-                    tasksList = TaskDAO.getFromJSON(tasksArray);
+                    projectDetails = ProjectDAO.getFromJSON(data);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -71,12 +84,13 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 e.printStackTrace();
                 return null;
             }
-            return tasksList;
+            return projectDetails;
         }
 
         @Override
-        protected void onPostExecute(List<Task> tasks) {
-            taskAdapter.setList(tasks);
+        protected void onPostExecute(ProjectDetails details) {
+            taskAdapter.setList(details.getTasks());
+            progressBar.setVisibility(View.GONE);
         }
     }
 }

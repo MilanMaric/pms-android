@@ -10,32 +10,46 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="net.etfbl.pisio.pms.pms.ProjectDetailActivity">
 
-    <TextView
-        android:id="@+id/projectDetailTitle"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/ProjectHeaderColor">
 
-    <TextView
-        android:id="@+id/projectDetailDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="22pt"
+            android:id="@+id/projectDetailTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/projectDetailStartDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/projectDetailDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/projectDetailEndDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/projectDetailStartDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/projectDetailBudget"
+        <TextView
+            android:id="@+id/projectDetailEndDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/projectDetailBudget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <ProgressBar
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:id="@+id/progressBar" />
+
     <ListView
         android:id="@+id/projectDetailTasksList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 </LinearLayout>
