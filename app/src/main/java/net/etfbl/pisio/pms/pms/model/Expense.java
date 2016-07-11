@@ -24,18 +24,25 @@ import android.util.Log;
  **********************************************************************/
 public class Expense {
     public static final String TAG = "Expense";
+    private int Id;
     private String Description;
     private String Amount;
     private String Date;
-
     public Expense() {
 
     }
-
     public Expense(String description, String amount, String date) {
         this.Description = description;
         Amount = amount;
         this.Date = date;
+    }
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
     }
 
     public String getDescription() {
@@ -64,7 +71,7 @@ public class Expense {
 
     @Override
     public String toString() {
-        Log.d(TAG,"toString");
+        Log.d(TAG, "toString");
         return "Description: " + Description + " \n" + "Amount: " + getAmount() + "\n" + "Date: " + Date;
     }
 }

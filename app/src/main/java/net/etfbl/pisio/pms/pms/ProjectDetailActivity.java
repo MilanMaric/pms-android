@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import net.etfbl.pisio.pms.pms.adapter.ExpenseAdapter;
 import net.etfbl.pisio.pms.pms.adapter.IncomeAdapter;
 import net.etfbl.pisio.pms.pms.adapter.TaskAdapter;
 import net.etfbl.pisio.pms.pms.model.Project;
@@ -35,6 +36,13 @@ public class ProjectDetailActivity extends AppCompatActivity {
     private IncomeAdapter incomeAdapter;
     private ListView incomesListView;
     private View projectDetails;
+    private ExpenseAdapter expenseAdapter;
+    private ListView expensesListView;
+    private Button btnProjectDetails;
+    private Button btnIncomes;
+    private Button btnTasks;
+    private Button btnExpenses;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,29 +51,43 @@ public class ProjectDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         project = (Project) intent.getSerializableExtra(MainActivity.PROJECT_TAG);
         taskAdapter = new TaskAdapter(this);
-        incomeAdapter = new IncomeAdapter(this, android.R.layout.simple_list_item_1);
+        incomeAdapter = new IncomeAdapter(this);
+        expenseAdapter = new ExpenseAdapter(this);
         tasksListView = (ListView) findViewById(R.id.projectDetailTasksList);
-        tasksListView.setAdapter(taskAdapter);
+        if (tasksListView != null) {
+            tasksListView.setAdapter(taskAdapter);
+        }
         projectDetails = findViewById(R.id.projectDetails);
         incomesListView = (ListView) findViewById(R.id.incomesListView);
-        incomesListView.setAdapter(incomeAdapter);
-        incomesListView.setVisibility(View.GONE);
+        if (incomesListView != null) {
+            incomesListView.setAdapter(incomeAdapter);
+            incomesListView.setVisibility(View.INVISIBLE);
+        }
+        expensesListView = (ListView) findViewById(R.id.expensesListView);
+        if (expensesListView != null) {
+            expensesListView.setAdapter(expenseAdapter);
+            expensesListView.setVisibility(View.INVISIBLE);
+        }
+
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.VISIBLE);
+        if (progressBar != null) {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+        projectDetails.setVisibility(View.GONE);
         setFields();
         TasksListAsyncTask asyncTask = new TasksListAsyncTask();
         asyncTask.execute();
-        setButtonsOnClickListeners();
     }
 
     private void setAllToGone() {
-        incomesListView.setVisibility(View.INVISIBLE);
-        projectDetails.setVisibility(View.INVISIBLE);
-        tasksListView.setVisibility(View.INVISIBLE);
+        incomesListView.setVisibility(View.GONE);
+        projectDetails.setVisibility(View.GONE);
+        tasksListView.setVisibility(View.GONE);
+        expensesListView.setVisibility(View.GONE);
     }
 
     private void setButtonsOnClickListeners() {
-        Button btnProjectDetails = (Button) findViewById(R.id.btnProjectDetails);
+        btnProjectDetails = (Button) findViewById(R.id.btnProjectDetails);
         if (btnProjectDetails != null) {
             btnProjectDetails.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -75,7 +97,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 }
             });
         }
-        Button btnIncomes = (Button) findViewById(R.id.btnIncomes);
+        btnIncomes = (Button) findViewById(R.id.btnIncomes);
         if (btnIncomes != null) {
             btnIncomes.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -85,7 +107,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 }
             });
         }
-        Button btnTasks = (Button) findViewById(R.id.btnTasks);
+        btnTasks = (Button) findViewById(R.id.btnTasks);
         if (btnTasks != null) {
             btnTasks.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -94,6 +116,17 @@ public class ProjectDetailActivity extends AppCompatActivity {
                     tasksListView.setVisibility(View.VISIBLE);
                 }
             });
+        }
+        btnExpenses = (Button) findViewById(R.id.btnExpenses);
+        if (btnExpenses != null) {
+            btnExpenses.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setAllToGone();
+                    expensesListView.setVisibility(View.VISIBLE);
+                }
+            });
+
         }
     }
 
@@ -151,11 +184,27 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(ProjectDetails details) {
-            taskAdapter.setList(details.getTasks());
-            incomeAdapter.addAll(details.getIncomes());
-
-            progressBar.setVisibility(View.GONE);
-            setAllToGone();
+            if (details != null) {
+                setButtonsOnClickListeners();
+                if (details.getTasks() == null) {
+                    btnTasks.setVisibility(View.GONE);
+                } else {
+                    taskAdapter.setList(details.getTasks());
+                }
+                if (details.getIncomes() == null) {
+                    btnIncomes.setVisibility(View.GONE);
+                } else {
+                    incomeAdapter.setList(details.getIncomes());
+                }
+                if (details.getExpenses() == null) {
+                    btnExpenses.setVisibility(View.GONE);
+                } else {
+                    expenseAdapter.setList(details.getExpenses());
+                }
+                progressBar.setVisibility(View.GONE);
+                setAllToGone();
+                projectDetails.setVisibility(View.VISIBLE);
+            }
         }
     }
 }

@@ -44,7 +44,10 @@ public class TaskAdapter extends BaseAdapter {
     }
 
     public void setList(List<Task> list) {
-        this.list = list;
+        if (list == null)
+            this.list = new ArrayList<>();
+        else
+            this.list = list;
         notifyDataSetChanged();
     }
 

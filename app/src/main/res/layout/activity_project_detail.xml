@@ -12,31 +12,43 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btnProjectDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/project_details" />
+            android:background="@color/colorPrimary"
+            android:text="@string/project_details"
+            android:textColor="@color/btnColor" />
 
         <Button
             android:id="@+id/btnTasks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tasks" />
+            android:background="@color/colorPrimary"
+            android:text="@string/tasks"
+            android:textColor="@color/btnColor" />
 
         <Button
             android:id="@+id/btnIncomes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/incomes" />
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:text="@string/incomes"
+            android:textColor="@color/btnColor" />
 
         <Button
             android:id="@+id/btnExpenses"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/expenses" />
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:text="@string/expenses"
+            android:textColor="@color/btnColor" />
 
     </LinearLayout>
 
@@ -86,6 +98,11 @@
 
     <ListView
         android:id="@+id/incomesListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ListView
+        android:id="@+id/expensesListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

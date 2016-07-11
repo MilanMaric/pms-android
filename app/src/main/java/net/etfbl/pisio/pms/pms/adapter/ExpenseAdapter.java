@@ -1,10 +1,16 @@
 package net.etfbl.pisio.pms.pms.adapter;
 
 import android.content.Context;
-import android.widget.ArrayAdapter;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
 
+import net.etfbl.pisio.pms.pms.R;
 import net.etfbl.pisio.pms.pms.model.Expense;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /****************************************************************************
@@ -27,28 +33,53 @@ import java.util.List;
  * \history
  * <p/>
  **********************************************************************/
-public class ExpenseAdapter extends ArrayAdapter<Expense> {
-    public ExpenseAdapter(Context context, int resource) {
-        super(context, resource);
+public class ExpenseAdapter extends BaseAdapter {
+    private List<Expense> list = new ArrayList<>();
+    private Context context;
+
+    public ExpenseAdapter(Context context) {
+
+        this.context = context;
     }
 
-    public ExpenseAdapter(Context context, int resource, int textViewResourceId) {
-        super(context, resource, textViewResourceId);
+    public List<Expense> getList() {
+        return list;
     }
 
-    public ExpenseAdapter(Context context, int resource, Expense[] objects) {
-        super(context, resource, objects);
+    public void setList(List<Expense> list) {
+        if (list == null)
+            this.list = new ArrayList<>();
+        else
+            this.list = list;
+        notifyDataSetChanged();
     }
 
-    public ExpenseAdapter(Context context, int resource, int textViewResourceId, Expense[] objects) {
-        super(context, resource, textViewResourceId, objects);
+    @Override
+    public int getCount() {
+        return list.size();
     }
 
-    public ExpenseAdapter(Context context, int resource, List<Expense> objects) {
-        super(context, resource, objects);
+    @Override
+    public Object getItem(int position) {
+        return list.get(position);
     }
 
-    public ExpenseAdapter(Context context, int resource, int textViewResourceId, List<Expense> objects) {
-        super(context, resource, textViewResourceId, objects);
+    @Override
+    public long getItemId(int position) {
+        return list.get(position).getId();
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View view = convertView;
+
+        if (view == null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(
+                    Context.LAYOUT_INFLATER_SERVICE);
+            view = inflater.inflate(R.layout.income_expense_row, null);
+        }
+        TextView textView = (TextView) view.findViewById(R.id.textHolder);
+        textView.setText(getItem(position).toString());
+        return view;
     }
 }
