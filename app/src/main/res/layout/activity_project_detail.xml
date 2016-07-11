@@ -12,15 +12,46 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btnProjectDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/project_details" />
+
+        <Button
+            android:id="@+id/btnTasks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tasks" />
+
+        <Button
+            android:id="@+id/btnIncomes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/incomes" />
+
+        <Button
+            android:id="@+id/btnExpenses"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/expenses" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/projectDetails"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/ProjectHeaderColor">
+        android:background="@color/ProjectHeaderColor"
+        android:orientation="vertical">
 
         <TextView
-            android:textSize="22pt"
             android:id="@+id/projectDetailTitle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="22pt" />
 
         <TextView
             android:id="@+id/projectDetailDescription"
@@ -44,12 +75,19 @@
     </LinearLayout>
 
     <ProgressBar
+        android:id="@+id/progressBar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/progressBar" />
+        android:layout_height="match_parent" />
 
     <ListView
         android:id="@+id/projectDetailTasksList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <ListView
+        android:id="@+id/incomesListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
 </LinearLayout>

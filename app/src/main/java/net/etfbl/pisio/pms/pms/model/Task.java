@@ -1,4 +1,6 @@
-package net.etfbl.pisio.pms.pms;
+package net.etfbl.pisio.pms.pms.model;
+
+import net.etfbl.pisio.pms.pms.model.Activity;
 
 import java.util.List;
 

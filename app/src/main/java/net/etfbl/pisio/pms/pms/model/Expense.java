@@ -1,4 +1,6 @@
-package net.etfbl.pisio.pms.pms;
+package net.etfbl.pisio.pms.pms.model;
+
+import android.util.Log;
 
 /****************************************************************************
  * Copyright (c) 2016 Elektrotehnicki fakultet
@@ -21,26 +23,27 @@ package net.etfbl.pisio.pms.pms;
  * <p/>
  **********************************************************************/
 public class Expense {
-    private String description;
+    public static final String TAG = "Expense";
+    private String Description;
     private String Amount;
-    private String date;
+    private String Date;
 
     public Expense() {
 
     }
 
     public Expense(String description, String amount, String date) {
-        this.description = description;
+        this.Description = description;
         Amount = amount;
-        this.date = date;
+        this.Date = date;
     }
 
     public String getDescription() {
-        return description;
+        return Description;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.Description = description;
     }
 
     public String getAmount() {
@@ -52,10 +55,16 @@ public class Expense {
     }
 
     public String getDate() {
-        return date;
+        return Date;
     }
 
     public void setDate(String date) {
-        this.date = date;
+        this.Date = date;
+    }
+
+    @Override
+    public String toString() {
+        Log.d(TAG,"toString");
+        return "Description: " + Description + " \n" + "Amount: " + getAmount() + "\n" + "Date: " + Date;
     }
 }

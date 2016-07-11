@@ -14,4 +14,7 @@
         completions."
     </string>
     <string name="activiries">Acitivies</string>
+    <string name="project_details">Details</string>
+    <string name="incomes">Incomes</string>
+    <string name="expenses">Expenses</string>
 </resources>

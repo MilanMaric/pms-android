@@ -1,4 +1,6 @@
-package net.etfbl.pisio.pms.pms;
+package net.etfbl.pisio.pms.pms.model;
+
+import android.util.Log;
 
 /****************************************************************************
  * Copyright (c) 2016 Elektrotehnicki fakultet
@@ -21,10 +23,22 @@ package net.etfbl.pisio.pms.pms;
  * <p/>
  **********************************************************************/
 public class Income {
+    public static final String TAG = "Income";
     private int Id;
-    private String description;
+    private String Description;
     private String Amount;
-    private String date;
+    private String Date;
+
+    public Income() {
+
+    }
+
+    public Income(int id, String description, String amount, String date) {
+        Id = id;
+        this.Description = description;
+        Amount = amount;
+        this.Date = date;
+    }
 
     public int getId() {
         return Id;
@@ -35,11 +49,11 @@ public class Income {
     }
 
     public String getDescription() {
-        return description;
+        return Description;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.Description = description;
     }
 
     public String getAmount() {
@@ -51,21 +65,16 @@ public class Income {
     }
 
     public String getDate() {
-        return date;
+        return Date;
     }
 
     public void setDate(String date) {
-        this.date = date;
+        this.Date = date;
     }
 
-    public Income() {
-
-    }
-
-    public Income(int id, String description, String amount, String date) {
-        Id = id;
-        this.description = description;
-        Amount = amount;
-        this.date = date;
+    @Override
+    public String toString() {
+        Log.d(TAG,"toString");
+        return "Description: " + Description + " \n" + "Amount: " + getAmount() + "\n" + "Date: " + Date;
     }
 }

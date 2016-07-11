@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import net.etfbl.pisio.pms.pms.adapter.ProjectAdapter;
+import net.etfbl.pisio.pms.pms.model.Project;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {

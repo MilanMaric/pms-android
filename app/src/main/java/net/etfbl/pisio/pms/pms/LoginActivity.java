@@ -29,6 +29,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import net.etfbl.pisio.pms.pms.model.Project;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

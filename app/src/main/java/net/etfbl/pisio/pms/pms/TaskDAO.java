@@ -3,6 +3,8 @@ package net.etfbl.pisio.pms.pms;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import net.etfbl.pisio.pms.pms.model.Task;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

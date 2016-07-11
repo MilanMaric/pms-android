@@ -1,4 +1,4 @@
-package net.etfbl.pisio.pms.pms;
+package net.etfbl.pisio.pms.pms.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import net.etfbl.pisio.pms.pms.R;
+import net.etfbl.pisio.pms.pms.model.Task;
 
 import java.util.ArrayList;
 import java.util.List;

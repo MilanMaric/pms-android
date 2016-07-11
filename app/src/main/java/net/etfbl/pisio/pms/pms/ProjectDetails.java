@@ -1,5 +1,9 @@
 package net.etfbl.pisio.pms.pms;
 
+import net.etfbl.pisio.pms.pms.model.Expense;
+import net.etfbl.pisio.pms.pms.model.Income;
+import net.etfbl.pisio.pms.pms.model.Task;
+
 import java.util.List;
 
 /****************************************************************************

@@ -1,4 +1,4 @@
-package net.etfbl.pisio.pms.pms;
+package net.etfbl.pisio.pms.pms.model;
 
 /****************************************************************************
  * Copyright (c) 2016 Elektrotehnicki fakultet
